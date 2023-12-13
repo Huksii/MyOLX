@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block auth_button %}
+
+{% if user.is_authenticated %}
+<div class="btn-group">
+    <button type="button" class="btn btn-outline-light dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="mdo" width="32" height="32" class="rounded-circle">
+        {% else %}
+        <img src="https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png"
+            alt="mdo" width="32" height="32" class="rounded-circle">
+        {% endif %}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'profile' user.id %}">Личный кабинет</a>
+        <a class="dropdown-item" href="{% url 'myads'%}">Мои объявления</a>
+        <a class="dropdown-item" href="">Настройки</a>
+        <hr class="dropdown-divider">
+        <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+    </div>
+</div>
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-success">Войти</a>
+<a href="{% url 'register' %}" class="btn btn-warning">Зарегистрироваться</a>
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Редактировать профиль</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.first_name }}
+    {{ user_form.last_name }}
+    {{ user_form.username }}
+    {{ user_form.email }}
+    {{ profile_form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+</form>
+{% endblock %}

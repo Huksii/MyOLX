@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ITCOLX | Регистрация
+{% endblock %}
+
+{% block auth_button %}
+<a href="{% url 'register' %}" class="btn btn-outline-success">Войти</a>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center;">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">
+                Добро пожаловать
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ contex_form.first_name }}<br>
+                {{ contex_form.first_name }}<br>
+                {{ contex_form.last_name }}<br>
+                {{ contex_form.username }}<br>
+                {{ contex_form.email }}<br>
+                {{ contex_form.password }}<br>
+                <input type="password" name="password2" required class="form-control" placeholder="Подтвердите пароль">
+                <br>
+                <button class="btn btn-outline-primary" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    {% endblock %}

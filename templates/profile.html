@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ITCOLX | Главная
+{% endblock %}
+
+
+{% block auth_button %}
+
+{% if user.is_authenticated %}
+<div class="btn-group">
+    <a href="{% url 'ads_add' %}" class="btn btn-outline-primary">Добавить объявление</a>
+    <button type="button" class="btn btn-outline-light dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+
+        {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" width="32" height="32" class="rounded-circle">
+
+        {% else %}
+        <img src="https://cdn4.iconfinder.com/data/icons/forum-buttons-and-community-signs-1/794/profile-3-512.png"
+            alt="mdo" width="32" height="32" class="rounded-circle">
+
+        {% endif %}
+
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'profile' user.id %}">Личный кабинет</a>
+        <a class="dropdown-item" href="#">Сообщения</a>
+        <a class="dropdown-item" href="{% url 'myads' %}">Мои объявления</a>
+        <a class="dropdown-item" href="#">Настройки</a>
+
+        <hr class="dropdown-divider">
+        <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+    </div>
+</div>
+
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-primary">Войти</a>
+<a href="{% url 'register' %}" class="btn btn-warning">Зарегистрироваться</a>
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row mb-6">
+        <div class="col-md-8">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+                style="background-color: rgba(255, 255, 255, 0.5);">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <div class="card-header"></div>
+                    <div class="card-header">
+                        <h3>Личная информация</h3>
+                        {% if user_context.profile.image %}
+                        <img src="{{ user_context.profile.image.url }}" width="120" height="120" class="rounded-circle">
+
+                        {% else %}
+                        <img src="https://cdn4.iconfinder.com/data/icons/forum-buttons-and-community-signs-1/794/profile-3-512.png"
+                            alt="mdo" width="120" height="120" class="rounded-circle">
+                        
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Имя Пользователя: <b>{{ user.username }}</b></p>
+                            <p class="card-text">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="card-text">{{ user.email }}</p>
+                            <a href="{% url 'edit_profile' user.id %}" class="btn btn-outline-dark">редактировать
+                                информацию</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+                    style="background-color: rgba(255, 255, 255, 0.5);">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <div class="card-header"></div>
+                        <div class="card-header">Сообщения</div>
+                        <div class="card-body">
+                            <p class="card-text"> </p>
+                            <a href="#" class="btn btn-outline-dark">Новые</a>
+                            <br>
+                            <br>
+                            <a href="#" class="btn btn-outline-dark">Диалоги</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+                    style="background-color: rgba(255, 255, 255, 0.5);">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <div class="card-header"></div>
+                        <div class="card-header">Мои объявления</div>
+                        <div class="card-body">
+                            <p class="card-text"> </p>
+                            <a href="#" class="btn btn-outline-dark">Новые</a>
+                            <br>
+                            <br>
+                            <a href="#" class="btn btn-outline-dark">Закрытые</a>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% endblock %}    

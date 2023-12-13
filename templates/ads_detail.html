@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ITCOLX | Главная
+{% endblock %}
+
+
+{% block auth_button %}
+
+{% if user.is_authenticated %}
+<div class="btn-group">
+    <button type="button" class="btn btn-outline-light dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="mdo" width="32" height="32" class="rounded-circle">
+        {% else %}
+        <img src="https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png"
+            alt="mdo" width="32" height="32" class="rounded-circle">
+        {% endif %}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'profile' user.id %}">Личный кабинет</a>
+        <a class="dropdown-item" href="{% url 'myads'%}">Мои объявления</a>
+        <a class="dropdown-item" href="#">Настройки</a>
+
+        <hr class="dropdown-divider">
+        <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+    </div>
+</div>
+
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-primary">Войти</a>
+<a href="{% url 'register' %}" class="btn btn-warning">Зарегистрироваться</a>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>{{ ads_detail.title }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="card-text"> {{ ads_detail.description }}</p>
+                    <p class="card-text"><strong>Price:</strong> {{ ads_detail.price }} тг</p>
+                    <p class="card-text"><strong>Contact:</strong> {{ ads_detail.contact }}</p>
+
+                    {% if ads_detail.address %}
+                    <p class="card-text"><strong>Address:</strong> {{ ads_detail.address }}</p>
+                    {% endif %}
+
+                    {% if ads_detail.whatsapp %}
+                    <p class="card-text"><strong>WhatsApp:</strong> <a href="{{ ads_detail.whatsapp }}"
+                            target="_blank">{{ ads_detail.whatsapp }}</a></p>
+                    {% endif %}
+
+                    {% if ads_detail.telegram %}
+                    <p class="card-text"><strong>Telegram:</strong> <a href="{{ ads_detail.telegram }}"
+                            target="_blank">{{ ads_detail.telegram }}</a></p>
+                    {% endif %}
+
+                    {% if ads_detail.instagram %}
+                    <p class="card-text"><strong>Instagram:</strong> <a href="{{ ads_detail.instagram }}"
+                            target="_blank">{{ ads_detail.instagram }}</a></p>
+                    {% endif %}
+
+                    <p class="card-text"><strong>Posted by:</strong> {{ ads_detail.user.username }}</p>
+                    <p class="card-text"><strong>Posted on:</strong> {{ ads_detail.created_at }}</p>
+
+                    <!-- Add any additional details you want to display -->
+                </div>
+                <div class="col-md-4">
+                    {% if ads_detail.address %}
+                    <!-- Embed Google Maps using an iframe -->
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <img class="bd-placeholder-img card-img-top" src="{{ads_detail.image.url}}"
+                            style="width: 300px !important;">
+                    </div>
+                    {% endif %}
+                    <br>
+                    {% if ads_detail.user == request.user %}
+                    <a href="{% url 'ads_delete' ads_detail.id %}" class="btn btn-outline-danger">Удалить объявление</a>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- You can also add a link to go back to the ads list -->
+        </div>
+    </div>
+</div>
+{% endblock %}

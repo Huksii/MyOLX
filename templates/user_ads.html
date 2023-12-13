@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ITCOLX | Войти
+{% endblock %}
+
+{% block auth_button %}
+
+{% if user.is_authenticated %}
+<div class="btn-group">
+    <a href="{% url 'ads_add' %}" class="btn btn-outline-primary">Добавить объявление</a>
+    <button type="button" class="btn btn-outline-light dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="mdo" width="32" height="32" class="rounded-circle">
+        {% else %}
+        <img src="https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png"
+            alt="mdo" width="32" height="32" class="rounded-circle">
+        {% endif %}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'profile' user.id %}">Личный кабинет</a>
+        <a class="dropdown-item" href="{% url 'myads'%}">Мои объявления</a>
+        <a class="dropdown-item" href="/profile">Настройки</a>
+        <hr class="dropdown-divider">
+        <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+    </div>
+</div>
+{% else %}
+<a href="{% url 'login' %}" class="btn btn-outline-success">Войти</a>
+<a href="{% url 'register' %}" class="btn btn-warning">Зарегистрироваться</a>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mb-2">
+
+        {% for ads in context_ads %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ ads.category }}</strong>
+                    <h3 class="mb-0">{{ ads.title }}</h3>
+                    <div class="mb-1 text-body-secondary">{{ ads.created_at }}</div>
+                    <p class="card-text mb-auto">{{ ads.description | truncatechars:100}}</p>
+                    <a href="{% url 'ads_detail' ads.id %}" class="icon-link gap-1 icon-link-hover stretched-link">
+                        Подробнее...
+                        <svg class="bi">
+                            <use xlink:href="#chevron-right"></use>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{ ads.images.url }}" width="200" height="250">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
